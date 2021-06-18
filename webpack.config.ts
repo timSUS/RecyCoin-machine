@@ -8,7 +8,7 @@ import {
   HotModuleReplacementPlugin,
   WebpackPluginInstance,
   optimize,
-  //DefinePlugin,
+  DefinePlugin,
   ProvidePlugin,
 } from "webpack";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
@@ -174,11 +174,9 @@ const setupConfig = (
           new InterpolateHtmlPlugin({
             PUBLIC_URL: "/static",
           }),
-        // new DefinePlugin({
-        //   "process.env.DEVELOPMENT": JSON.stringify(mode === "development"),
-        //   "process.env.PUBLIC_URL": JSON.stringify("/static"),
-        //   "process.env.MODERN": JSON.stringify(targetToModern),
-        // }),
+        new DefinePlugin({
+          "process.env.PUBLIC_URL": JSON.stringify("/static"),
+        }),
         targetType === "renderer" &&
           new ProvidePlugin({
             process: "process/browser",
