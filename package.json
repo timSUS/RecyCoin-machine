@@ -1,7 +1,7 @@
 {
   "name": "recycoin-machine",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/main/index.js",
   "repository": "https://github.com/timSUS/RecyCoin-machine",
   "author": "KrzysztofZawisla <zawislakrzysztof.zk@gmail.com>",
   "scripts": {

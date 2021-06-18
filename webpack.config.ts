@@ -12,16 +12,16 @@ import {
   ProvidePlugin,
 } from "webpack";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
-import HtmlWebpackPlugin from "html-webpack-plugin";
+//import HtmlWebpackPlugin from "html-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import { GenerateSW } from "workbox-webpack-plugin";
 //import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-import InterpolateHtmlPlugin from "interpolate-html-plugin";
+//import InterpolateHtmlPlugin from "interpolate-html-plugin";
 import MinifyJSONWebpackPlugin from "minify-json-webpack-plugin";
 import DuplicatePackageCheckerPlugin from "duplicate-package-checker-webpack-plugin";
-import ScriptExtHtmlWebpackPlugin from "script-ext-html-webpack-plugin";
+//import ScriptExtHtmlWebpackPlugin from "script-ext-html-webpack-plugin";
 import { Configuration as WebpackDevelopmentServerConfiguration } from "webpack-dev-server";
 import UnusedWebpackPlugin from "unused-webpack-plugin";
 
@@ -35,7 +35,12 @@ const { AggressiveMergingPlugin }: typeof optimize = optimize;
 const indexHTML: string = "index.html";
 
 const getEntryPoint = (targetType: TargetType): string => {
-  return join(__dirname, "src", targetType, "index.tsx");
+  const entryFileLiteral = {
+    renderer: "index.tsx",
+    preload: "preload.ts",
+    main: "index.ts",
+  };
+  return join(__dirname, "src", targetType, entryFileLiteral[targetType]);
 };
 
 const getBabelTarget = (): string => {
@@ -131,16 +136,16 @@ const setupConfig = (
             "runtime",
           ),
           "~root": join(__dirname, "src"),
-          "~renderer/pages": join(__dirname, "src", "render", "pages"),
+          "~renderer/pages": join(__dirname, "src", "renderer", "pages"),
           "~renderer/components": join(
             __dirname,
             "src",
-            "render",
+            "renderer",
             "components",
           ),
-          "~renderer/stores": join(__dirname, "src", "render", "stores"),
-          "~renderer/types": join(__dirname, "src", "render", "types"),
-          "~renderer/utils": join(__dirname, "src", "render", "utils"),
+          "~renderer/stores": join(__dirname, "src", "renderer", "stores"),
+          "~renderer/types": join(__dirname, "src", "renderer", "types"),
+          "~renderer/utils": join(__dirname, "src", "renderer", "utils"),
         },
       },
       experiments: {
@@ -159,17 +164,17 @@ const setupConfig = (
           ],
           root: __dirname,
         }),
-        targetType === "renderer" &&
-          new ScriptExtHtmlWebpackPlugin({
-            async: "index.js",
-            module: "index.js",
-          }),
+        // targetType === "renderer" &&
+        //   new ScriptExtHtmlWebpackPlugin({
+        //     async: "index.js",
+        //     module: "index.js",
+        //   }),
         new DuplicatePackageCheckerPlugin(),
-        targetType === "renderer" &&
-          new InterpolateHtmlPlugin({
-            PUBLIC_URL: "/static",
-            LEGACY_SCRIPT: "/src/legacy/index.js",
-          }),
+        // targetType === "renderer" &&
+        //   new InterpolateHtmlPlugin({
+        //     PUBLIC_URL: "/static",
+        //     LEGACY_SCRIPT: "/src/legacy/index.js",
+        //   }),
         // new DefinePlugin({
         //   "process.env.DEVELOPMENT": JSON.stringify(mode === "development"),
         //   "process.env.PUBLIC_URL": JSON.stringify("/static"),
@@ -191,14 +196,14 @@ const setupConfig = (
         //       targetToModern ? "modern" : "legacy"
         //     }-analyzer-report.html`,
         //   }),
-        targetType === "renderer" &&
-          new HtmlWebpackPlugin({
-            template: join(__dirname, "src", "assets", indexHTML),
-            filename: join(__dirname, "dist", indexHTML),
-            scriptLoading: "blocking",
-            minify: mode !== "development",
-            inject: true,
-          }),
+        // targetType === "renderer" &&
+        //   new HtmlWebpackPlugin({
+        //     template: join(__dirname, "src", "assets", indexHTML),
+        //     filename: join(__dirname, "dist", indexHTML),
+        //     scriptLoading: "blocking",
+        //     minify: mode !== "development",
+        //     inject: true,
+        //   }),
         new ESLintPlugin({
           extensions: ["ts", "tsx"],
         }),
