@@ -1,7 +1,7 @@
 import "v8-compile-cache";
 import "source-map-support/register";
 import path from "path";
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, Menu } from "electron";
 import express, { Express } from "express";
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
@@ -37,12 +37,14 @@ if (!gotTheLock) {
   app.on("ready", (): void => {
     installExtension(REACT_DEVELOPER_TOOLS);
     setupServerListening();
+    Menu.setApplicationMenu(null);
     mainWindow = new BrowserWindow({
       width: 800,
       height: 600,
       minWidth: 320,
       minHeight: 400,
       show: false,
+      frame: false,
       webPreferences: {
         contextIsolation: true,
         preload: path.join(__dirname, "..", "preload", "preload.js"),
