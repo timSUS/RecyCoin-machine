@@ -58,6 +58,13 @@ if (!gotTheLock) {
       ipcMain.on("toggleDevTools", (): void => {
         mainWindow?.webContents.toggleDevTools();
       });
+      ipcMain.on("reload", (): void => {
+        mainWindow?.webContents.reload();
+      });
+      ipcMain.on("hardReload", (): void => {
+        app.relaunch();
+        app.quit();
+      });
       mainWindow?.show();
     });
   });

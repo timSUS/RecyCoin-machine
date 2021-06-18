@@ -3,7 +3,7 @@ import { StrictMode } from "react";
 import { render } from "react-dom";
 import initTranslation from "~renderer/utils/initTranslation/initTranslation";
 import { i18n as TranslationType } from "i18next";
-//import Mousetrap from "mousetrap";
+import Mousetrap from "mousetrap";
 
 if (process.env.DEVELOPMENT) {
   const {
@@ -25,7 +25,17 @@ if (process.env.DEVELOPMENT) {
   getTTFB(console.log);
 }
 
-window.api?.toggleDevelopmentTools && window.api.toggleDevelopmentTools();
+if (window.api.isElectron) {
+  Mousetrap.bind("f12", (): void => {
+    window.api.toggleDevelopmentTools && window.api.toggleDevelopmentTools();
+  });
+  Mousetrap.bind("r", (): void => {
+    window.api.reload && window.api.reload();
+  });
+  Mousetrap.bind("shift+r", (): void => {
+    window.api.hardReload && window.api.hardReload();
+  });
+}
 
 const root: HTMLElement | null = document.querySelector("#root");
 const tranlation: TranslationType = await initTranslation();

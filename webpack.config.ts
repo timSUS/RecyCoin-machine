@@ -16,7 +16,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
-import { GenerateSW } from "workbox-webpack-plugin";
+//import { GenerateSW } from "workbox-webpack-plugin";
 //import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import InterpolateHtmlPlugin from "interpolate-html-plugin";
 import MinifyJSONWebpackPlugin from "minify-json-webpack-plugin";
@@ -205,22 +205,6 @@ const setupConfig = (
         new ESLintPlugin({
           extensions: ["ts", "tsx"],
         }),
-        targetType === "renderer" &&
-          new GenerateSW({
-            cleanupOutdatedCaches: true,
-            sourcemap: true,
-            clientsClaim: true,
-            skipWaiting: true,
-            runtimeCaching: [
-              {
-                handler: "NetworkFirst",
-                urlPattern: /.(?:png|jpg|jpeg|svg|html|js)$/,
-              },
-            ],
-            exclude: [/\.md$/],
-            babelPresetEnvTargets: [babelTarget],
-            //swDest: `../../sw-${targetToModern ? "modern" : "legacy"}.js`,
-          }),
         new CaseSensitivePathsPlugin(),
         targetType === "renderer" &&
           mode === "development" &&

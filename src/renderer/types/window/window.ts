@@ -5,6 +5,8 @@ declare global {
     api: {
       isElectron: boolean;
       toggleDevelopmentTools?: () => void;
+      reload?: () => void;
+      hardReload?: () => void;
     };
   }
 }
