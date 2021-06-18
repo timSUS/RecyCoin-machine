@@ -57,7 +57,7 @@ const setupConfig = (
     return {
       mode: mode === "development" ? mode : "production",
       entry: entryPoint,
-      target: `electron-${targetType}`,
+      target: targetType === "renderer" ? "web" : `electron-${targetType}`,
       optimization: {
         minimize: mode !== "development",
         minimizer: [new TerserPlugin() as unknown as WebpackPluginInstance],
