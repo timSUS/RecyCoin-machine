@@ -34,11 +34,11 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "~root/*": ["./*"],
-      "~pages/*": ["./pages/*"],
-      "~components/*": ["./components/*"],
-      "~stores/*": ["./stores/*"],
-      "~types/*": ["./types/*"],
-      "~utils/*": ["./utils/*"]
+      "~renderer/pages/*": ["./renderer/pages/*"],
+      "~renderer/components/*": ["./renderer/components/*"],
+      "~renderer/stores/*": ["./renderer/stores/*"],
+      "~renderer/types/*": ["./renderer/types/*"],
+      "~renderer/utils/*": ["./renderer/utils/*"]
     }
   },
   "include": ["./src"],

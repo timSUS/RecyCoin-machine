@@ -1,8 +1,8 @@
 import { FC, memo, ReactElement, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import useErrorBoundary, { UseErrorBoundaryState } from "use-error-boundary";
-import HomePage from "~root/pages/HomePage/HomePage";
-import GlobalStyle from "~components/GlobalStyle/GlobalStyle";
+import HomePage from "~renderer/pages/HomePage/HomePage";
+import GlobalStyle from "~renderer/components/GlobalStyle/GlobalStyle";
 
 const AppWrapper: FC = (): JSX.Element => {
   const { ErrorBoundary, didCatch }: UseErrorBoundaryState = useErrorBoundary();

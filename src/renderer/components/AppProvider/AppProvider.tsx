@@ -7,10 +7,10 @@ import { HelmetProvider } from "react-helmet-async";
 import {
   isMobileGlobal,
   languageGlobal,
-} from "~stores/globalStore/globalStore";
+} from "~renderer/stores/globalStore/globalStore";
 import { useState } from "@hookstate/core";
-import { State } from "~types/states/states";
-import { UseEffectCallbackReturnValue } from "~types/reactHooks/reactHooks";
+import { State } from "~renderer/types/states/states";
+import { UseEffectCallbackReturnValue } from "~renderer/types/reactHooks/reactHooks";
 
 export interface AppProviderProperties {
   children: ReactNode;

@@ -6,7 +6,7 @@ import i18next, {
 } from "i18next";
 import i18nextDetector from "i18next-browser-languagedetector";
 import i18nextBackend from "i18next-xhr-backend";
-import translationsOptions from "~utils/translationOptions/translationOptions";
+import translationsOptions from "~renderer/utils/translationOptions/translationOptions";
 
 type InitTranslation = () => Promise<TranslationType>;
 type SetupTranslation = <T extends Module>(

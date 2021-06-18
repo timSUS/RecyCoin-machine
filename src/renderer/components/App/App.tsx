@@ -1,6 +1,6 @@
 import { FC, memo } from "react";
-import AppWrapper from "~components/AppWrapper/AppWrapper";
-import AppProvider from "../AppProvider/AppProvider";
+import AppWrapper from "~renderer/components/AppWrapper/AppWrapper";
+import AppProvider from "~renderer/components/AppProvider/AppProvider";
 import { i18n as TranslationType } from "i18next";
 
 export interface AppProperties {

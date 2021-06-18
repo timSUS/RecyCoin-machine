@@ -8,7 +8,7 @@ import {
   HotModuleReplacementPlugin,
   WebpackPluginInstance,
   optimize,
-  DefinePlugin,
+  //DefinePlugin,
   ProvidePlugin,
 } from "webpack";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
@@ -17,16 +17,11 @@ import ESLintPlugin from "eslint-webpack-plugin";
 import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import { GenerateSW } from "workbox-webpack-plugin";
-import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-import { constants } from "zlib";
-import RobotstxtPlugin from "robotstxt-webpack-plugin";
-import SitemapPlugin from "sitemap-webpack-plugin";
+//import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import InterpolateHtmlPlugin from "interpolate-html-plugin";
 import MinifyJSONWebpackPlugin from "minify-json-webpack-plugin";
-import CompressionPlugin from "compression-webpack-plugin";
 import DuplicatePackageCheckerPlugin from "duplicate-package-checker-webpack-plugin";
 import ScriptExtHtmlWebpackPlugin from "script-ext-html-webpack-plugin";
-import PreloadWebpackPlugin from "@vue/preload-webpack-plugin";
 import { Configuration as WebpackDevelopmentServerConfiguration } from "webpack-dev-server";
 import UnusedWebpackPlugin from "unused-webpack-plugin";
 
@@ -34,30 +29,30 @@ interface Configuration extends WebpackConfiguration {
   devServer?: WebpackDevelopmentServerConfiguration;
 }
 
+type TargetType = "main" | "preload" | "renderer";
+
 const { AggressiveMergingPlugin }: typeof optimize = optimize;
 const indexHTML: string = "index.html";
 
-const getEntryPoint = (): string => {
-  return join(__dirname, "src", "index.tsx");
+const getEntryPoint = (targetType: TargetType): string => {
+  return join(__dirname, "src", targetType, "index.tsx");
 };
 
-const getBabelTarget = (targetToModern: boolean): string => {
-  return targetToModern
-    ? "last 2 Chrome versions, last 2 Firefox versions, not Firefox < 60, not Chrome < 60"
-    : "> 0.25%, not dead";
+const getBabelTarget = (): string => {
+  return "last 2 Chrome versions, last 2 Firefox versions";
 };
 
 const setupConfig = (
   _environment: unknown,
   { mode }: { mode: string },
 ): Configuration[] => {
-  const getConfig = (targetToModern: boolean): Configuration => {
-    const entryPoint: string = getEntryPoint();
-    const babelTarget: string = getBabelTarget(targetToModern);
+  const getConfig = (targetType: TargetType): Configuration => {
+    const entryPoint: string = getEntryPoint(targetType);
+    const babelTarget: string = getBabelTarget();
     return {
       mode: mode === "development" ? mode : "production",
       entry: entryPoint,
-      target: "web",
+      target: `electron-${targetType}`,
       optimization: {
         minimize: mode !== "development",
         minimizer: [new TerserPlugin() as unknown as WebpackPluginInstance],
@@ -66,7 +61,7 @@ const setupConfig = (
       devtool: "source-map",
       module: {
         rules: [
-          {
+          targetType === "renderer" && {
             test: /\.(png|jpg|gif)$/i,
             use: [
               {
@@ -74,7 +69,7 @@ const setupConfig = (
               },
             ],
           },
-          {
+          targetType === "renderer" && {
             test: /\.svg$/,
             use: ["@svgr/webpack"],
           },
@@ -111,26 +106,19 @@ const setupConfig = (
                   ],
                   plugins: [
                     "@emotion",
-                    targetToModern &&
-                      mode === "development" &&
-                      require.resolve("react-refresh/babel"),
+                    require.resolve("react-refresh/babel"),
                   ].filter(Boolean),
                 },
               },
             ],
           },
-        ],
+        ].filter(Boolean),
       },
       output: {
-        path: join(
-          __dirname,
-          "dist",
-          "src",
-          targetToModern ? "modern" : "legacy",
-        ),
-        publicPath: `/src/${targetToModern ? "modern" : "legacy"}/`,
+        path: join(__dirname, "dist", targetType),
+        publicPath: `/src/renderer/`,
         filename: "index.js",
-        module: targetToModern,
+        module: targetType === "renderer",
         chunkFilename: "[id].js",
       },
       resolve: {
@@ -143,22 +131,23 @@ const setupConfig = (
             "runtime",
           ),
           "~root": join(__dirname, "src"),
-          "~pages": join(__dirname, "src", "pages"),
-          "~components": join(__dirname, "src", "components"),
-          "~stores": join(__dirname, "src", "stores"),
-          "~types": join(__dirname, "src", "types"),
-          "~utils": join(__dirname, "src", "utils"),
+          "~renderer/pages": join(__dirname, "src", "render", "pages"),
+          "~renderer/components": join(
+            __dirname,
+            "src",
+            "render",
+            "components",
+          ),
+          "~renderer/stores": join(__dirname, "src", "render", "stores"),
+          "~renderer/types": join(__dirname, "src", "render", "types"),
+          "~renderer/utils": join(__dirname, "src", "render", "utils"),
         },
       },
       experiments: {
         topLevelAwait: true,
-        outputModule: targetToModern,
+        outputModule: targetType === "renderer",
       },
       plugins: [
-        targetToModern &&
-          new PreloadWebpackPlugin({
-            rel: "prefetch",
-          }),
         new UnusedWebpackPlugin({
           directories: [join(__dirname, "src")],
           exclude: [
@@ -170,57 +159,39 @@ const setupConfig = (
           ],
           root: __dirname,
         }),
-        targetToModern &&
+        targetType === "renderer" &&
           new ScriptExtHtmlWebpackPlugin({
             async: "index.js",
             module: "index.js",
           }),
         new DuplicatePackageCheckerPlugin(),
-        targetToModern &&
+        targetType === "renderer" &&
           new InterpolateHtmlPlugin({
             PUBLIC_URL: "/static",
             LEGACY_SCRIPT: "/src/legacy/index.js",
           }),
-        new DefinePlugin({
-          "process.env.DEVELOPMENT": JSON.stringify(mode === "development"),
-          "process.env.PUBLIC_URL": JSON.stringify("/static"),
-          "process.env.MODERN": JSON.stringify(targetToModern),
-        }),
-        new CompressionPlugin({
-          filename: "[path][base].gz",
-          test: /\.(js|css|html|svg)$/,
-          deleteOriginalAssets: false,
-        }),
-        targetToModern &&
-          new CompressionPlugin({
-            filename: "[path][base].br",
-            algorithm: "brotliCompress",
-            test: /\.(js|css|html|svg)$/,
-            compressionOptions: {
-              params: {
-                [constants.BROTLI_PARAM_QUALITY]: 11,
-              },
-            },
-            threshold: 10240,
-            minRatio: 0.8,
-            deleteOriginalAssets: false,
+        // new DefinePlugin({
+        //   "process.env.DEVELOPMENT": JSON.stringify(mode === "development"),
+        //   "process.env.PUBLIC_URL": JSON.stringify("/static"),
+        //   "process.env.MODERN": JSON.stringify(targetToModern),
+        // }),
+        targetType === "renderer" &&
+          new ProvidePlugin({
+            process: "process/browser",
           }),
-        new ProvidePlugin({
-          process: "process/browser",
-        }),
         new CleanWebpackPlugin({
           dry: true,
           dangerouslyAllowCleanPatternsOutsideProject: true,
         }),
-        mode !== "development" &&
-          new BundleAnalyzerPlugin({
-            openAnalyzer: false,
-            analyzerMode: "static",
-            reportFilename: `../../../${
-              targetToModern ? "modern" : "legacy"
-            }-analyzer-report.html`,
-          }),
-        targetToModern &&
+        // mode !== "development" &&
+        //   new BundleAnalyzerPlugin({
+        //     openAnalyzer: false,
+        //     analyzerMode: "static",
+        //     reportFilename: `../../../${
+        //       targetToModern ? "modern" : "legacy"
+        //     }-analyzer-report.html`,
+        //   }),
+        targetType === "renderer" &&
           new HtmlWebpackPlugin({
             template: join(__dirname, "src", "assets", indexHTML),
             filename: join(__dirname, "dist", indexHTML),
@@ -228,67 +199,48 @@ const setupConfig = (
             minify: mode !== "development",
             inject: true,
           }),
-        mode !== "development" &&
-          targetToModern &&
-          new SitemapPlugin({
-            base: "https://google.com" /* webpage URL */,
-            paths: [
-              "/",
-              /** paths here for example  */
-            ],
-            options: {
-              filename: "../../map.xml",
-            },
-          }),
         new ESLintPlugin({
           extensions: ["ts", "tsx"],
         }),
-        new GenerateSW({
-          cleanupOutdatedCaches: true,
-          sourcemap: true,
-          clientsClaim: true,
-          skipWaiting: true,
-          runtimeCaching: [
-            {
-              handler: "NetworkFirst",
-              urlPattern: /.(?:png|jpg|jpeg|svg|html|js)$/,
-            },
-          ],
-          exclude: [/\.md$/],
-          babelPresetEnvTargets: [babelTarget],
-          swDest: `../../sw-${targetToModern ? "modern" : "legacy"}.js`,
-        }),
-        new CaseSensitivePathsPlugin(),
-        mode !== "development" &&
-          targetToModern &&
-          new RobotstxtPlugin({
-            filePath: "../../robots.txt",
+        targetType === "renderer" &&
+          new GenerateSW({
+            cleanupOutdatedCaches: true,
+            sourcemap: true,
+            clientsClaim: true,
+            skipWaiting: true,
+            runtimeCaching: [
+              {
+                handler: "NetworkFirst",
+                urlPattern: /.(?:png|jpg|jpeg|svg|html|js)$/,
+              },
+            ],
+            exclude: [/\.md$/],
+            babelPresetEnvTargets: [babelTarget],
+            //swDest: `../../sw-${targetToModern ? "modern" : "legacy"}.js`,
           }),
-        targetToModern &&
+        new CaseSensitivePathsPlugin(),
+        targetType === "renderer" &&
           mode === "development" &&
           new HotModuleReplacementPlugin(),
-        targetToModern &&
+        targetType === "renderer" &&
           mode === "development" &&
           new ReactRefreshWebpackPlugin(),
         new AggressiveMergingPlugin(),
         new MinifyJSONWebpackPlugin(),
       ].filter(Boolean) as unknown as WebpackPluginInstance[],
-      devServer: targetToModern
-        ? {
-            historyApiFallback: true,
-            contentBase: join(__dirname, "dist"),
-            compress: true,
-            hot: true,
-            writeToDisk: true,
-          }
-        : undefined,
+      devServer:
+        targetType === "renderer"
+          ? {
+              historyApiFallback: true,
+              contentBase: join(__dirname, "dist"),
+              compress: true,
+              hot: true,
+              writeToDisk: true,
+            }
+          : undefined,
     } as Configuration;
   };
-  const config: Configuration[] = [getConfig(true)];
-  if (mode !== "development") {
-    config.push(getConfig(false));
-  }
-  return config;
+  return [getConfig("main"), getConfig("preload"), getConfig("renderer")];
 };
 
 export default setupConfig;

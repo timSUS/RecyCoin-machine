@@ -1,7 +1,7 @@
-import App from "~components/App/App";
+import App from "~renderer/components/App/App";
 import { StrictMode } from "react";
 import { render } from "react-dom";
-import initTranslation from "~utils/initTranslation/initTranslation";
+import initTranslation from "~renderer/utils/initTranslation/initTranslation";
 import { i18n as TranslationType } from "i18next";
 
 if (process.env.DEVELOPMENT) {
