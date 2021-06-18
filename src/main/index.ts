@@ -1,6 +1,7 @@
 import "v8-compile-cache";
 import "source-map-support/register";
 import path from "path";
+import electronIsDev from "electron-is-dev";
 import { app, BrowserWindow, Menu } from "electron";
 import express, { Express } from "express";
 import installExtension, {
@@ -35,7 +36,7 @@ if (!gotTheLock) {
     }
   });
   app.on("ready", (): void => {
-    installExtension(REACT_DEVELOPER_TOOLS);
+    electronIsDev && installExtension(REACT_DEVELOPER_TOOLS);
     setupServerListening();
     Menu.setApplicationMenu(null);
     mainWindow = new BrowserWindow({
