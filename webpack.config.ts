@@ -121,7 +121,7 @@ const setupConfig = (
       },
       output: {
         path: join(__dirname, "dist", targetType),
-        publicPath: `/src/renderer/`,
+        publicPath: `/renderer/`,
         filename: "index.js",
         module: targetType === "renderer",
         chunkFilename: "[id].js",

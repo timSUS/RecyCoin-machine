@@ -8,8 +8,8 @@ import installExtension, {
 } from "electron-devtools-installer";
 
 const server: Express = express();
-server.use(express.static(path.join(__dirname, "..", "public")));
-server.use("/renderer", express.static(path.join(__dirname, "..", "static")));
+server.use(express.static(path.join(__dirname, "..", "static")));
+server.use("/renderer", express.static(path.join(__dirname, "..", "renderer")));
 let port: number = 5000;
 
 let mainWindow: BrowserWindow | null;
