@@ -12,16 +12,16 @@ import {
   ProvidePlugin,
 } from "webpack";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
-//import HtmlWebpackPlugin from "html-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import { GenerateSW } from "workbox-webpack-plugin";
 //import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-//import InterpolateHtmlPlugin from "interpolate-html-plugin";
+import InterpolateHtmlPlugin from "interpolate-html-plugin";
 import MinifyJSONWebpackPlugin from "minify-json-webpack-plugin";
 import DuplicatePackageCheckerPlugin from "duplicate-package-checker-webpack-plugin";
-//import ScriptExtHtmlWebpackPlugin from "script-ext-html-webpack-plugin";
+import ScriptExtHtmlWebpackPlugin from "script-ext-html-webpack-plugin";
 import { Configuration as WebpackDevelopmentServerConfiguration } from "webpack-dev-server";
 import UnusedWebpackPlugin from "unused-webpack-plugin";
 
@@ -164,17 +164,16 @@ const setupConfig = (
           ],
           root: __dirname,
         }),
-        // targetType === "renderer" &&
-        //   new ScriptExtHtmlWebpackPlugin({
-        //     async: "index.js",
-        //     module: "index.js",
-        //   }),
+        targetType === "renderer" &&
+          new ScriptExtHtmlWebpackPlugin({
+            async: "index.js",
+            module: "index.js",
+          }),
         new DuplicatePackageCheckerPlugin(),
-        // targetType === "renderer" &&
-        //   new InterpolateHtmlPlugin({
-        //     PUBLIC_URL: "/static",
-        //     LEGACY_SCRIPT: "/src/legacy/index.js",
-        //   }),
+        targetType === "renderer" &&
+          new InterpolateHtmlPlugin({
+            PUBLIC_URL: "/static",
+          }),
         // new DefinePlugin({
         //   "process.env.DEVELOPMENT": JSON.stringify(mode === "development"),
         //   "process.env.PUBLIC_URL": JSON.stringify("/static"),
@@ -196,14 +195,14 @@ const setupConfig = (
         //       targetToModern ? "modern" : "legacy"
         //     }-analyzer-report.html`,
         //   }),
-        // targetType === "renderer" &&
-        //   new HtmlWebpackPlugin({
-        //     template: join(__dirname, "src", "assets", indexHTML),
-        //     filename: join(__dirname, "dist", indexHTML),
-        //     scriptLoading: "blocking",
-        //     minify: mode !== "development",
-        //     inject: true,
-        //   }),
+        targetType === "renderer" &&
+          new HtmlWebpackPlugin({
+            template: join(__dirname, "src", "static", indexHTML),
+            filename: join(__dirname, "dist", "static", indexHTML),
+            scriptLoading: "blocking",
+            minify: mode !== "development",
+            inject: true,
+          }),
         new ESLintPlugin({
           extensions: ["ts", "tsx"],
         }),

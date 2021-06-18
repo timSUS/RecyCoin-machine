@@ -9,7 +9,7 @@ import installExtension, {
 
 const server: Express = express();
 server.use(express.static(path.join(__dirname, "..", "public")));
-server.use("/renderer", express.static(path.join(__dirname, "..", "renderer")));
+server.use("/renderer", express.static(path.join(__dirname, "..", "static")));
 let port: number = 5000;
 
 let mainWindow: BrowserWindow | null;
