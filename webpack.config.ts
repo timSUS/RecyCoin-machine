@@ -35,12 +35,12 @@ const { AggressiveMergingPlugin }: typeof optimize = optimize;
 const indexHTML: string = "index.html";
 
 const getEntryPoint = (targetType: TargetType): string => {
-  const entryFileLiteral = {
-    renderer: "index.tsx",
-    preload: "preload.ts",
-    main: "index.ts",
-  };
-  return join(__dirname, "src", targetType, entryFileLiteral[targetType]);
+  return join(
+    __dirname,
+    "src",
+    targetType,
+    `index.ts${targetType === "renderer" ? "x" : ""}`,
+  );
 };
 
 const getBabelTarget = (): string => {
@@ -176,6 +176,7 @@ const setupConfig = (
           }),
         new DefinePlugin({
           "process.env.PUBLIC_URL": JSON.stringify("/static"),
+          "process.env.DEVELOPMENT": JSON.stringify(mode === "development"),
         }),
         targetType === "renderer" &&
           new ProvidePlugin({

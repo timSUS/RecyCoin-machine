@@ -1,12 +1,13 @@
 import "v8-compile-cache";
 import "source-map-support/register";
 import path from "path";
-import electronIsDev from "electron-is-dev";
-import { app, BrowserWindow, Menu } from "electron";
+import { app, BrowserWindow, ipcMain, Menu } from "electron";
 import express, { Express } from "express";
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from "electron-devtools-installer";
+
+type SetupServerListening = () => void;
 
 const server: Express = express();
 server.use(express.static(path.join(__dirname, "..", "static")));
@@ -17,7 +18,7 @@ let mainWindow: BrowserWindow | null;
 
 const gotTheLock: boolean = app.requestSingleInstanceLock();
 
-const setupServerListening = (): void => {
+const setupServerListening: SetupServerListening = (): void => {
   server.listen(port).on("error", (): void => {
     port++;
     setupServerListening();
@@ -36,7 +37,7 @@ if (!gotTheLock) {
     }
   });
   app.on("ready", (): void => {
-    electronIsDev && installExtension(REACT_DEVELOPER_TOOLS);
+    process.env.DEVELOPMENT && installExtension(REACT_DEVELOPER_TOOLS);
     setupServerListening();
     Menu.setApplicationMenu(null);
     mainWindow = new BrowserWindow({
@@ -47,12 +48,16 @@ if (!gotTheLock) {
       show: false,
       frame: false,
       webPreferences: {
+        enableRemoteModule: true,
         contextIsolation: true,
-        preload: path.join(__dirname, "..", "preload", "preload.js"),
+        preload: path.join(__dirname, "..", "preload", "index.js"),
       },
     });
     mainWindow.loadURL(`http://localhost:${port}`);
     mainWindow.on("ready-to-show", (): void => {
+      ipcMain.on("toggleDevTools", (): void => {
+        mainWindow?.webContents.toggleDevTools();
+      });
       mainWindow?.show();
     });
   });

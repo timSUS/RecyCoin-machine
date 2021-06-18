@@ -3,6 +3,7 @@ import { StrictMode } from "react";
 import { render } from "react-dom";
 import initTranslation from "~renderer/utils/initTranslation/initTranslation";
 import { i18n as TranslationType } from "i18next";
+//import Mousetrap from "mousetrap";
 
 if (process.env.DEVELOPMENT) {
   const {
@@ -23,6 +24,8 @@ if (process.env.DEVELOPMENT) {
   // eslint-disable-next-line no-console
   getTTFB(console.log);
 }
+
+window.api?.toggleDevelopmentTools && window.api.toggleDevelopmentTools();
 
 const root: HTMLElement | null = document.querySelector("#root");
 const tranlation: TranslationType = await initTranslation();
