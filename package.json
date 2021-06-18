@@ -13,7 +13,7 @@
     "remove-build": "rimraf dist",
     "build": "tsc && yarn run remove-build && cross-env TS_NODE_PROJECT=tsconfig.webpack.json webpack --config webpack.config.ts",
     "build-dev": "yarn run build --mode development",
-    "watch": "cross-env TS_NODE_PROJECT=tsconfig.webpack.json webpack serve --config webpack.config.ts --mode development",
+    "watch": "cross-env TS_NODE_PROJECT=tsconfig.webpack.json webpack serve --config webpack.config.ts --mode development --hot",
     "check": "ncu",
     "update": "ncu -u && yarn",
     "npm-check": "npm-check",

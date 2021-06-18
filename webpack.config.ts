@@ -49,7 +49,7 @@ const getBabelTarget = (): string => {
 
 const setupConfig = (
   _environment: unknown,
-  { mode }: { mode: string },
+  { mode, hot }: { mode: string; hot: boolean },
 ): Configuration[] => {
   const getConfig = (targetType: TargetType): Configuration => {
     const entryPoint: string = getEntryPoint(targetType);
@@ -111,7 +111,7 @@ const setupConfig = (
                   ],
                   plugins: [
                     "@emotion",
-                    require.resolve("react-refresh/babel"),
+                    hot && require.resolve("react-refresh/babel"),
                   ].filter(Boolean),
                 },
               },
@@ -233,13 +233,14 @@ const setupConfig = (
         new MinifyJSONWebpackPlugin(),
       ].filter(Boolean) as unknown as WebpackPluginInstance[],
       devServer:
-        targetType === "renderer"
+        targetType === "renderer" && hot
           ? {
               historyApiFallback: true,
               contentBase: join(__dirname, "dist"),
               compress: true,
               hot: true,
               writeToDisk: true,
+              port: 5000,
             }
           : undefined,
     } as Configuration;
