@@ -26,6 +26,12 @@ const HomePage: FC = (): JSX.Element => {
             isDisabled.set((previousState: boolean): boolean => {
               return !previousState;
             });
+            const speaker = new SpeechSynthesisUtterance(
+              `${
+                isDisabled.get() ? "Włączono" : "Wyłączono"
+              } tryb dla niepełnosprawnych`,
+            );
+            window.speechSynthesis.speak(speaker);
           }}
         />
       </AccessibilityIconWrapper>
