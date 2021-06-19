@@ -12,7 +12,7 @@ const ThrowPage: FC = (): JSX.Element => {
     <>
       <ContentWrapper>
         <RowWrapper>
-          <TextContent content="Teraz wrzuć butelkę" />
+          <TextContent content="Teraz wrzuć butelki" />
         </RowWrapper>
         <Icon path={mdiBottleSoda} size={5} color="#111" />
       </ContentWrapper>
