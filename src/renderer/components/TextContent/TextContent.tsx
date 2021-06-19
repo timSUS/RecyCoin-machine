@@ -9,7 +9,7 @@ interface TextContentWrapperProperties {
 }
 
 const TextContentWrapper = styled.div<TextContentWrapperProperties>`
-  font-size: ${({ fontSize }) => (fontSize ? fontSize : "44px")};
+  font-size: ${({ fontSize }) => (fontSize ? fontSize : "24px")};
   background: linear-gradient(to left, #22577a, #38a3a5);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

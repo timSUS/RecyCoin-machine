@@ -6,9 +6,15 @@ const GlobalStyle: FC = (): JSX.Element => {
     <Global
       styles={css`
         @font-face {
-          font-family: "Roboto";
-          src: url(${process.env.PUBLIC_URL}/fonts/Roboto/Roboto-Regular.ttf);
+          font-family: "Montserrat";
+          src: url(/static/fonts/Montserrat/Montserrat-Bold.ttf);
           font-weight: 400;
+          font-style: normal;
+        }
+        @font-face {
+          font-family: "Montserrat";
+          src: url(/static/fonts/Montserrat/Montserrat-Bold.ttf);
+          font-weight: 700;
           font-style: normal;
         }
         *,
@@ -20,7 +26,7 @@ const GlobalStyle: FC = (): JSX.Element => {
         body {
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
-          font-family: "Roboto", sans-serif;
+          font-family: "Montserrat", sans-serif;
           user-select: none;
           overflow: hidden;
         }

@@ -1,6 +1,12 @@
 import styled from "@emotion/styled";
+import { DetailedHTMLProps, HTMLAttributes } from "react";
 
-const RowWrapper = styled.div`
+type RowWrapperProperties = DetailedHTMLProps<
+  HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+>;
+
+const RowWrapper = styled.div<RowWrapperProperties>`
   display: flex;
 `;
 

@@ -5,6 +5,9 @@ const MainWrapper = styled.main`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  > * {
+    margin-bottom: 15px;
+  }
 `;
 
 export default MainWrapper;
