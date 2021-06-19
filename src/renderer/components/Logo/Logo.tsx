@@ -10,6 +10,7 @@ const LogoWrapper = styled.div`
   background: linear-gradient(to left, #22577a, #38a3a5);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  margin-bottom: 30px;
 `;
 
 const Logo: FC = (): JSX.Element => {

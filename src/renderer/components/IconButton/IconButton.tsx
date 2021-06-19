@@ -27,8 +27,8 @@ const IconButton: FC<IconButtonProperties> = ({
   ...rest
 }: IconButtonProperties): JSX.Element => {
   return (
-    <IconButtonWrapper {...rest}>
-      <Icon path={icon} title={alt} aria-label={alt} size={1} color="#fff" />
+    <IconButtonWrapper title={alt} aria-label={alt} {...rest}>
+      <Icon path={icon} size={1} color="#fff" />
     </IconButtonWrapper>
   );
 };

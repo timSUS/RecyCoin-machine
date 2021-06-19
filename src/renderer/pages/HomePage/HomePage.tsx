@@ -1,40 +1,18 @@
+/* eslint-disable @typescript-eslint/triple-slash-reference */
+///<reference path="../../../../global.d.ts" />
+
 import { FC, memo } from "react";
-import Logo from "~renderer/components/Logo/Logo";
-import Button from "~renderer/components/Button/Button";
 import { Link } from "react-router-dom";
-import IconButton from "~renderer/components/IconButton/IconButton";
-import { mdiWheelchairAccessibility } from "@mdi/js";
-import { mdiEarth } from "@mdi/js";
-import AccessibilityIconWrapper from "~root/renderer/components/AccessibilityIconWrapper/AccessibilityIconWrapper";
-import { isDisabledGlobal } from "~renderer/stores/globalStore/globalStore";
-import { useState } from "@hookstate/core";
+import HomePageText from "~assets/svg/HomePageText.svg";
+import Button from "~renderer/components/Button/Button";
 
 const HomePage: FC = (): JSX.Element => {
-  const isDisabled = useState(isDisabledGlobal);
   return (
     <>
-      <Logo />
+      <HomePageText width={400} height={350} />
       <Link to="/scan">
-        <Button text="Zapraszamy" />
+        <Button text="Zaczynamy" />
       </Link>
-      <AccessibilityIconWrapper>
-        <IconButton icon={mdiEarth} alt="Wybierz język" />
-        <IconButton
-          icon={mdiWheelchairAccessibility}
-          alt="Włącz tryb dla niepełnosprawnych"
-          onClick={() => {
-            isDisabled.set((previousState: boolean): boolean => {
-              return !previousState;
-            });
-            const speaker = new SpeechSynthesisUtterance(
-              `${
-                isDisabled.get() ? "Włączono" : "Wyłączono"
-              } tryb dla niepełnosprawnych`,
-            );
-            window.speechSynthesis.speak(speaker);
-          }}
-        />
-      </AccessibilityIconWrapper>
     </>
   );
 };

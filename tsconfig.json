@@ -38,7 +38,8 @@
       "~renderer/components/*": ["./renderer/components/*"],
       "~renderer/stores/*": ["./renderer/stores/*"],
       "~renderer/types/*": ["./renderer/types/*"],
-      "~renderer/utils/*": ["./renderer/utils/*"]
+      "~renderer/utils/*": ["./renderer/utils/*"],
+      "~assets/*": ["./assets/*"]
     }
   },
   "include": ["./src"],

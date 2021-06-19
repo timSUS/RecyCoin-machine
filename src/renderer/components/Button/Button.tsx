@@ -13,7 +13,7 @@ const ButtonWrapper = styled.div`
   align-items: center;
   background: #38a3a5;
   width: fit-content;
-  padding: 5px;
+  padding: 5px 15px;
   color: #fff;
   cursor: pointer;
 `;

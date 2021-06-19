@@ -21,6 +21,8 @@ const GlobalStyle: FC = (): JSX.Element => {
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
           font-family: "Roboto", sans-serif;
+          user-select: none;
+          overflow: hidden;
         }
         a {
           text-decoration: none;

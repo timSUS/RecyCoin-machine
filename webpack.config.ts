@@ -147,6 +147,7 @@ const setupConfig = (
           "~renderer/stores": join(__dirname, "src", "renderer", "stores"),
           "~renderer/types": join(__dirname, "src", "renderer", "types"),
           "~renderer/utils": join(__dirname, "src", "renderer", "utils"),
+          "~assets": join(__dirname, "src", "assets"),
         },
       },
       experiments: {
