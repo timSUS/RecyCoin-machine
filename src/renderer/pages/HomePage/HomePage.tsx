@@ -14,7 +14,7 @@ const HomePage: FC = (): JSX.Element => {
         <HomePageText width={400} height={350} />
       </ContentWrapper>
       <Link to="/scan">
-        <Button text="Zaczynamy" />
+        <Button text="Rozpocznij" />
       </Link>
     </>
   );
