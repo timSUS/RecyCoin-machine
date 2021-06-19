@@ -1,6 +1,6 @@
 import "v8-compile-cache";
 import "source-map-support/register";
-import path from "path";
+import { join } from "path";
 import { app, BrowserWindow, ipcMain, Menu, screen } from "electron";
 import express, { Express } from "express";
 import installExtension, {
@@ -10,8 +10,11 @@ import installExtension, {
 type SetupServerListening = () => void;
 
 const server: Express = express();
-server.use(express.static(path.join(__dirname, "..", "static")));
-server.use("/renderer", express.static(path.join(__dirname, "..", "renderer")));
+server.use(express.static(join(__dirname, "..", "static")));
+server.use("/renderer", express.static(join(__dirname, "..", "renderer")));
+server.get("*", (_request, response) => {
+  response.sendFile(join(__dirname, "..", "static", "index.html"));
+});
 let port: number = 5000;
 
 let mainWindow: BrowserWindow | null;
@@ -53,7 +56,7 @@ if (!gotTheLock) {
       webPreferences: {
         enableRemoteModule: true,
         contextIsolation: true,
-        preload: path.join(__dirname, "..", "preload", "index.js"),
+        preload: join(__dirname, "..", "preload", "index.js"),
       },
     });
     mainWindow.loadURL(`http://localhost:${port}`);
