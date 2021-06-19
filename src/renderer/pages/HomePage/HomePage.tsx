@@ -5,11 +5,14 @@ import { FC, memo } from "react";
 import { Link } from "react-router-dom";
 import HomePageText from "~assets/svg/HomePageText.svg";
 import Button from "~renderer/components/Button/Button";
+import ContentWrapper from "~renderer/components/ContentWrapper/ContentWrapper";
 
 const HomePage: FC = (): JSX.Element => {
   return (
     <>
-      <HomePageText width={400} height={350} />
+      <ContentWrapper>
+        <HomePageText width={400} height={350} />
+      </ContentWrapper>
       <Link to="/scan">
         <Button text="Zaczynamy" />
       </Link>

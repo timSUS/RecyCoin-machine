@@ -13,6 +13,7 @@ const LogoWrapper = styled.div`
     #22577a 0%,
     #38a3a5 100%
   );
+  margin-top: 15px;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 30px;

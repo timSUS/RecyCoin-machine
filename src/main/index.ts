@@ -66,7 +66,7 @@ if (!gotTheLock) {
         app.relaunch();
         app.quit();
       });
-      !isDevelopment && mainWindow?.maximize();
+      mainWindow?.maximize();
       mainWindow?.show();
     });
   });
