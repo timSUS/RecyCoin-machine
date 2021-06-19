@@ -16,7 +16,7 @@ const ReadyPage: FC = (): JSX.Element => {
           <TextContent content="Otrzymałeś właśnie:" />
         </RowWrapper>
         <RowWrapper>
-          <TextContent content="15" />
+          <TextContent content="15" fontSize="32px" />
         </RowWrapper>
         <RowWrapper>
           <TextContent content="RecyCoinów" />

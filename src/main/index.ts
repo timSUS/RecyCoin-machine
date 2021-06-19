@@ -1,7 +1,7 @@
 import "v8-compile-cache";
 import "source-map-support/register";
 import path from "path";
-import { app, BrowserWindow, ipcMain, Menu } from "electron";
+import { app, BrowserWindow, ipcMain, Menu, screen } from "electron";
 import express, { Express } from "express";
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
@@ -41,13 +41,15 @@ if (!gotTheLock) {
     isDevelopment && installExtension(REACT_DEVELOPER_TOOLS);
     setupServerListening();
     Menu.setApplicationMenu(null);
+    const screenSize = screen.getPrimaryDisplay().size;
     mainWindow = new BrowserWindow({
       width: 800,
       height: 600,
-      minWidth: 320,
-      minHeight: 400,
+      minWidth: screenSize.width,
+      minHeight: screenSize.height,
       show: false,
       frame: isDevelopment,
+      resizable: false,
       webPreferences: {
         enableRemoteModule: true,
         contextIsolation: true,
