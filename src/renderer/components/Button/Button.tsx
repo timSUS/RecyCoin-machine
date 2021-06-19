@@ -7,13 +7,13 @@ interface ButtonProperties {
 
 const ButtonWrapper = styled.div`
   border-radius: 15px;
-  min-height: 75px;
+  min-height: 65px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #38a3a5;
   width: fit-content;
-  padding: 20px;
+  padding: 5px;
   color: #fff;
 `;
 

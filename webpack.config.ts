@@ -3,6 +3,7 @@
 
 import { join, resolve } from "path";
 import TerserPlugin from "terser-webpack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
 import {
   Configuration as WebpackConfiguration,
   HotModuleReplacementPlugin,
@@ -214,6 +215,22 @@ const setupConfig = (
           new ReactRefreshWebpackPlugin(),
         new AggressiveMergingPlugin(),
         new MinifyJSONWebpackPlugin(),
+        targetType === "renderer" &&
+          new CopyPlugin({
+            patterns: [
+              {
+                from: join(__dirname, "src", "static"),
+                to: join(__dirname, "dist", "static", "static"),
+                noErrorOnMissing: true,
+                globOptions: {
+                  ignore: ["**/index.html"],
+                },
+              },
+            ],
+            options: {
+              concurrency: 100,
+            },
+          }),
       ].filter(Boolean) as unknown as WebpackPluginInstance[],
       devServer:
         targetType === "renderer" && hot

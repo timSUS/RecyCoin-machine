@@ -5,6 +5,12 @@ const GlobalStyle: FC = (): JSX.Element => {
   return (
     <Global
       styles={css`
+        @font-face {
+          font-family: "Roboto";
+          src: url(${process.env.PUBLIC_URL}/fonts/Roboto/Roboto-Regular.ttf);
+          font-weight: 400;
+          font-style: normal;
+        }
         *,
         *::after,
         *::before {
@@ -14,6 +20,7 @@ const GlobalStyle: FC = (): JSX.Element => {
         body {
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
+          font-family: "Roboto", sans-serif;
         }
       `}
     />
