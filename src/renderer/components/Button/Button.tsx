@@ -15,6 +15,7 @@ const ButtonWrapper = styled.div`
   width: fit-content;
   padding: 5px;
   color: #fff;
+  cursor: pointer;
 `;
 
 const Button: FC<ButtonProperties> = ({

@@ -30,6 +30,8 @@
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
     "@hookstate/core": "^3.0.8",
+    "@mdi/js": "^5.9.55",
+    "@mdi/react": "^1.5.0",
     "@svgr/webpack": "^5.5.0",
     "i18next": "^20.3.1",
     "i18next-browser-languagedetector": "^6.1.1",

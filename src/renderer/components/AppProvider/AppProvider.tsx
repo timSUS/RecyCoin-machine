@@ -5,6 +5,7 @@ import { I18nextProvider } from "react-i18next";
 import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import {
+  isDisabledGlobal,
   isMobileGlobal,
   languageGlobal,
 } from "~renderer/stores/globalStore/globalStore";
@@ -25,6 +26,7 @@ const AppProvider: FC<AppProviderProperties> = ({
 }: AppProviderProperties): JSX.Element => {
   const isMobile: State<boolean> = useState(isMobileGlobal);
   const language: State<string> = useState(languageGlobal);
+  const isDisabled = useState(isDisabledGlobal);
   useEffect((): UseEffectCallbackReturnValue => {
     const resizeHandler: ResizeHandler = (): void => {
       const isMobileSize: boolean = window.innerWidth < 768;
@@ -42,6 +44,12 @@ const AppProvider: FC<AppProviderProperties> = ({
   useEffect((): void => {
     translation.changeLanguage(language.get());
   }, [language.get()]);
+  useEffect(() => {
+    const speaker = new SpeechSynthesisUtterance(
+      "Włączono tryb dla niepełnosprawnych",
+    );
+    window.speechSynthesis.speak(speaker);
+  }, [isDisabled.get()]);
   return (
     <I18nextProvider i18n={translation}>
       <HelmetProvider>

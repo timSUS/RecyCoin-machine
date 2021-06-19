@@ -22,6 +22,9 @@ const GlobalStyle: FC = (): JSX.Element => {
           -moz-osx-font-smoothing: grayscale;
           font-family: "Roboto", sans-serif;
         }
+        a {
+          text-decoration: none;
+        }
       `}
     />
   );

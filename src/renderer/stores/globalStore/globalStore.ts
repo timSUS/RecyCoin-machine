@@ -18,3 +18,5 @@ export const languageGlobal: StateMethods<string> & StateMethodsDestroy =
         ).slice(0, 2) as string)
       : "en",
   );
+
+export const isDisabledGlobal = createState(false);

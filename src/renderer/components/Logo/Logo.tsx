@@ -7,7 +7,7 @@ const LogoWrapper = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 54px;
-  background: -webkit-radial-gradient(#22577a, #38a3a5);
+  background: linear-gradient(to left, #22577a, #38a3a5);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
