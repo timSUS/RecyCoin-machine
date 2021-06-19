@@ -8,7 +8,7 @@ const ReadyPage: FC = (): JSX.Element => {
   return (
     <>
       <RowWrapper>
-        <TextContent content="Gratulacje!" />
+        <TextContent content="Gratulacje!" fontSize="38px" />
       </RowWrapper>
       <RowWrapper>
         <TextContent content="Otrzymałeś właśnie:" />
