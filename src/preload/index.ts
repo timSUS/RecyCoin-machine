@@ -5,6 +5,7 @@ const { exposeInMainWorld }: ContextBridge = contextBridge;
 
 exposeInMainWorld("api", {
   isElectron: isElectron,
+  isDevelopment: process.env.DEVELOPMENT,
   toggleDevelopmentTools: process.env.DEVELOPMENT
     ? (): void => ipcRenderer.send("toggleDevTools")
     : undefined,

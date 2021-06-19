@@ -15,6 +15,7 @@ server.use("/renderer", express.static(path.join(__dirname, "..", "renderer")));
 let port: number = 5000;
 
 let mainWindow: BrowserWindow | null;
+const isDevelopment: boolean = process.env.DEVELOPMENT as unknown as boolean;
 
 const gotTheLock: boolean = app.requestSingleInstanceLock();
 
@@ -37,7 +38,7 @@ if (!gotTheLock) {
     }
   });
   app.on("ready", (): void => {
-    process.env.DEVELOPMENT && installExtension(REACT_DEVELOPER_TOOLS);
+    isDevelopment && installExtension(REACT_DEVELOPER_TOOLS);
     setupServerListening();
     Menu.setApplicationMenu(null);
     mainWindow = new BrowserWindow({
@@ -46,7 +47,7 @@ if (!gotTheLock) {
       minWidth: 320,
       minHeight: 400,
       show: false,
-      frame: false,
+      frame: isDevelopment,
       webPreferences: {
         enableRemoteModule: true,
         contextIsolation: true,

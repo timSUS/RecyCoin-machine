@@ -7,6 +7,7 @@ declare global {
       toggleDevelopmentTools?: () => void;
       reload?: () => void;
       hardReload?: () => void;
+      isDevelopment: boolean;
     };
   }
 }

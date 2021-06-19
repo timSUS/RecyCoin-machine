@@ -25,7 +25,7 @@ if (process.env.DEVELOPMENT) {
   getTTFB(console.log);
 }
 
-if (window.api.isElectron) {
+if (window.api.isElectron && window.api?.isDevelopment) {
   Mousetrap.bind("f12", (): void => {
     window.api.toggleDevelopmentTools && window.api.toggleDevelopmentTools();
   });
